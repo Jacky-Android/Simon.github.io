@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/55181594?v=4">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>Pytorch加速&nbsp;|&nbsp;Simon’s Blogs</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="Pytorch加速">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🔥&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="https://avatars.githubusercontent.com/u/55181594?v=4"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About me</span>
+        </div>
+      </a>
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🔥&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">Pytorch加速</h1>
+    
+  </header>
+  <article id="https://www.notion.so/b9be05da11ba47ca8487f8b8ab75835f" class="PageRoot"><div id="https://www.notion.so/22c15d8c19054db3a32b834e5dfd64ba" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">由于最近的程序对速度要求比较高，想要快速出结果，因此特地学习了一下混合精度运算和并行化操作，由于已经有很多的文章介绍相关的原理，因此本篇只讲述如何应用</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">torch</strong></span><span class="SemanticString">实现混合精度运算、数据并行和分布式运算，不具体介绍原理。</span></span></p></div><h2 id="https://www.notion.so/8206d0065a8e4f218fecbda0e6905ada" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/8206d0065a8e4f218fecbda0e6905ada"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">混合精度</strong></span></span></h2><div id="https://www.notion.so/ff26c3bec49542e98146b2ac7f93156b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">自动混合精度训练（auto Mixed Precision，AMP）可以大幅度降低训练的成本并提高训练的速度。在此之前，自动混合精度运算是使用NVIDIA开发的Apex工具。从PyTorch1.6.0开始，</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">PyTorch</strong></span><span class="SemanticString">已经自带了AMP模块，因此接下来主要对</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">PyTorch</strong></span><span class="SemanticString">自带的amp模块进行简单的使用介绍。</span></span></p></div><pre id="https://www.notion.so/ca6682d349a34c6d9e52ddefe5396088" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment">## 导入amp工具包</span>
+<span class="token keyword">from</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>ampimport autocast<span class="token punctuation">,</span> GradScaler
+
+model<span class="token punctuation">.</span>train<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">## 对梯度进行scale来加快模型收敛，</span>
+<span class="token comment">## 因为float16梯度容易出现underflow（梯度过小）</span>
+scaler <span class="token operator">=</span> GradScaler<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+batch_size <span class="token operator">=</span> train_loader<span class="token punctuation">.</span>batch_size
+num_batches <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>train_loader<span class="token punctuation">)</span>
+end <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span> <span class="token punctuation">(</span>images<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token keyword">in</span> tqdm<span class="token punctuation">.</span>tqdm<span class="token punctuation">(</span>
+    <span class="token builtin">enumerate</span><span class="token punctuation">(</span>train_loader<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">ascii</span><span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> total<span class="token operator">=</span><span class="token builtin">len</span><span class="token punctuation">(</span>train_loader<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token comment"># measure data loading time</span>
+    data_time<span class="token punctuation">.</span>update<span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> end<span class="token punctuation">)</span>
+    optimizer<span class="token punctuation">.</span>zero_grad<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> args<span class="token punctuation">.</span>gpuisnot <span class="token boolean">None</span><span class="token punctuation">:</span>
+        images <span class="token operator">=</span> images<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span>args<span class="token punctuation">.</span>gpu<span class="token punctuation">,</span> non_blocking<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+    target <span class="token operator">=</span> target<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span>args<span class="token punctuation">.</span>gpu<span class="token punctuation">,</span> non_blocking<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span class="token comment"># 自动为GPU op选择精度来提升训练性能而不降低模型准确度</span>
+<span class="token keyword">with</span> autocast<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token comment"># compute output</span>
+        output <span class="token operator">=</span> model<span class="token punctuation">(</span>images<span class="token punctuation">)</span>
+
+        loss <span class="token operator">=</span> criterion<span class="token punctuation">(</span>output<span class="token punctuation">,</span> target<span class="token punctuation">)</span>
+
+    scaler<span class="token punctuation">.</span>scale<span class="token punctuation">(</span>loss<span class="token punctuation">)</span><span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># optimizer.step()</span>
+    scaler<span class="token punctuation">.</span>step<span class="token punctuation">(</span>optimizer<span class="token punctuation">)</span>
+    scaler<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</span></span></span></code></pre><h2 id="https://www.notion.so/25f29d9394684d40a6d784979ff420dd" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/25f29d9394684d40a6d784979ff420dd"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">数据并行</strong></span></span></h2><div id="https://www.notion.so/257039f2a08449fca8a78c7e03192a3b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">当服务器有单机有多卡的时候，为了实现模型的加速（可能由于一张GPU不够），可以采用单机多卡对模型进行训练。为了实现这个目的，我们必须想办法让一个模型可以分布在多个GPU上进行训练。</span></span></p></div><div id="https://www.notion.so/3e9091165c6f404b8d02fbb76757bf73" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">PyTorch</strong></span><span class="SemanticString">中，</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">nn.DataParallel</strong></span><span class="SemanticString">为我提供了一个简单的接口，可以很简单的实现对模型的并行化，我们只需要用</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">nn.DataParallel</strong></span><span class="SemanticString">对模型进行包装，在设置一些参数，就可以很容易的实现模型的多卡并行。</span></span></p></div><pre id="https://www.notion.so/b5586bcfb4274ed48f5e8435262f1930" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># multigpu表示显卡的号码</span>
+multigpu <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">]</span>
+<span class="token comment"># 设置主GPU,用来汇总模型的损失函数并且求导，对梯度进行更新</span>
+torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>set_device<span class="token punctuation">(</span>args<span class="token punctuation">.</span>multigpu<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment"># 模型的梯度全部汇总到gpu[0]上来</span>
+model <span class="token operator">=</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>DataParallel<span class="token punctuation">(</span>model<span class="token punctuation">,</span> device_ids<span class="token operator">=</span>args<span class="token punctuation">.</span>multigpu<span class="token punctuation">)</span><span class="token punctuation">.</span>cuda<span class="token punctuation">(</span>
+        args<span class="token punctuation">.</span>multigpu<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        <span class="token punctuation">)</span>
+</span></span></span></code></pre><h3 id="https://www.notion.so/7ada091cea0547e3908bfb19b9d1e9a7" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/7ada091cea0547e3908bfb19b9d1e9a7"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">nn.DataParallel使用混合精度运算</strong></span></span></h3><div id="https://www.notion.so/b109dc8e3c8f4c7d8210817a027fc00a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">nn.DataParallel对模型进行混合精度运算需要进行一些特殊的配置，不然模型是无法实现数据并行化的。autocast 设计为 “thread local” 的，所以只在 main thread 上设 autocast 区域是不 work 的。借鉴自（https://zhuanlan.zhihu.com/p/348554267） 这里先给出错误的操作：</span></span></p></div><pre id="https://www.notion.so/8b7b8001daec4fdd865bb795a9b1a629" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>model <span class="token operator">=</span> MyModel<span class="token punctuation">(</span><span class="token punctuation">)</span>
+dp_model <span class="token operator">=</span> nn<span class="token punctuation">.</span>DataParallel<span class="token punctuation">(</span>model<span class="token punctuation">)</span>
+
+<span class="token keyword">with</span> autocast<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token comment"># dp_model's internal threads won't autocast.</span>
+<span class="token comment">#The main thread's autocast state has no effect.</span>
+     output <span class="token operator">=</span> dp_model<span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">)</span><span class="token comment"># loss_fn still autocasts, but it's too late...</span>
+     loss <span class="token operator">=</span> loss_fn<span class="token punctuation">(</span>output<span class="token punctuation">)</span>
+</span></span></span></code></pre><div id="https://www.notion.so/7769672226dc46a9a4c5b7b56a999aeb" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">解决的方法有两种，下面分别介绍：</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">1. 在模型模块的forward函数中加入装饰函数</strong></span></span></p></div><pre id="https://www.notion.so/1720d43ba535431483d4d73b439ca9f1" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>MyModel<span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    @autocast<span class="token punctuation">(</span><span class="token punctuation">)</span>
+defforward<span class="token punctuation">(</span>self<span class="token punctuation">,</span> <span class="token builtin">input</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+       <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</span></span></span></code></pre><div id="https://www.notion.so/4ef257fcb55b40a0a0350fdd6ec609b3" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">2. 另一个正确姿势是在 forward 的里面设 autocast 区域：</strong></span><span class="SemanticString"> </span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">python MyModel(nn.Module): ... def forward(self, input): with autocast(): ...</code></span><span class="SemanticString"> </span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">在对forward函数进行操作后，再在main thread中使用autocast</strong></span><span class="SemanticString"> ```python model = MyModel() dp_model = nn.DataParallel(model)</span></span></p></div><div id="https://www.notion.so/b77e7f9f00804d96982c178d35c26e88" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">with autocast(): output = dp_model(input) loss = loss_fn(output) ```</span></span></p></div><h3 id="https://www.notion.so/dbf6806796974ddb8bbc79e793e40edc" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/dbf6806796974ddb8bbc79e793e40edc"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">nn.DataParallel缺点</strong></span></span></h3><div id="https://www.notion.so/ec74bf7c9aed42fbb8cc5df18c7c13ea" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在每个训练的batch中，nn.DataParallel模块会把所有的loss全部反传到gpu[0]上，几个G的数据传输，loss的计算都需要在一张显卡上完成，这样子很容易造成显卡的负载不均匀，经常可以看到gpu[0]的负载会明显比其他的gpu高很多。此外，显卡的数据传输速度会对模型的训练速度造成很大的瓶颈，这显然是不合理的。因此接下来我们将介绍，具体原理可以参考单机多卡操作(分布式DataParallel，混合精度，Horovod)（https://zhuanlan.zhihu.com/p/158375055）</span></span></p></div><h2 id="https://www.notion.so/2b9d5aea99054992b7e35c2d60ae9821" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/2b9d5aea99054992b7e35c2d60ae9821"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">分布式运算</strong></span></span></h2><div id="https://www.notion.so/3c29d8e32e08437d94cee288597d4fff" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">nn.DistributedDataParallel：多进程控制多 GPU，一起训练模型。</span></span></p></div><h3 id="https://www.notion.so/58ae8bad0e85462e991f55dcd20c8cf9" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/58ae8bad0e85462e991f55dcd20c8cf9"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">优点</strong></span></span></h3><div id="https://www.notion.so/698ba12facc5411898eafb67c0db2185" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">每个进程控制一块GPU，可以保证模型的运算可以不受到显卡之间通信的影响，并且可以使得每张显卡的负载相对比较均匀。但是相对于单机单卡或者单机多卡(nn.DataParallel）来说，就有几个问题</span></span></p></div><div id="https://www.notion.so/4a24714398de45d59c2df8fb75982c83" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">1. 同步不同GPU上的模型参数，特别是BatchNormalization</strong></span><span class="SemanticString"> </span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">2. 告诉每个进程自己的位置，使用哪块GPU，用args.local_rank参数指定</strong></span><span class="SemanticString"> </span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">3. 每个进程在取数据的时候要确保拿到的是不同的数据（DistributedSampler）</strong></span></span></p></div><h3 id="https://www.notion.so/551e260b7f7d4bd6828e40e0255885b7" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/551e260b7f7d4bd6828e40e0255885b7"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">使用方式介绍</strong></span></span></h3><div id="https://www.notion.so/d1cf5819242446e2be8e3694406579b5" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">启动程序</strong></span><span class="SemanticString"> 由于博主目前也只是实践了单机多卡操作，因此主要对单机多卡进行介绍。区别于平时简单的运行python程序，我们需要使用PyTorch自带的启动器 torch.distributed.launch 来启动程序。</span></span></p></div><pre id="https://www.notion.so/530b9f348e334ffaa6fa1a29016e6510" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># 其中CUDA_VISIBLE_DEVICES指定机器上显卡的数量</span>
+<span class="token comment"># nproc_per_node程序进程的数量</span>
+CUDA_VISIBLE_DEVICES<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span> python <span class="token operator">-</span>m torch<span class="token punctuation">.</span>distributed<span class="token punctuation">.</span>launch <span class="token operator">-</span><span class="token operator">-</span>nproc_per_node<span class="token operator">=</span><span class="token number">4</span> main<span class="token punctuation">.</span>py
+</span></span></span></code></pre><div id="https://www.notion.so/01b8ecdac52446adb2dc851b805442c6" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">配置主程序</strong></span></span></p></div><pre id="https://www.notion.so/e989d73fc67b4108980b947794886cde" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'--local_rank'</span><span class="token punctuation">,</span> <span class="token builtin">type</span><span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token number">0</span>，<span class="token builtin">help</span><span class="token operator">=</span><span class="token string">'node rank for distributed training'</span><span class="token punctuation">)</span>
+<span class="token comment"># 配置local_rank参数，告诉每个进程自己的位置，要使用哪张GPU</span>
+</span></span></span></code></pre><div id="https://www.notion.so/203416f412824dc293dc6c057e1b188e" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">初始化显卡通信和参数获取的方式</strong></span></span></p></div><pre id="https://www.notion.so/756b9c1281b44736b805bcce0611dc94" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># 为这个进程指定GPU</span>
+torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>set_device<span class="token punctuation">(</span>args<span class="token punctuation">.</span>local_rank<span class="token punctuation">)</span>
+<span class="token comment"># 初始化GPU通信方式NCLL和参数的获取方式，其中env表示环境变量</span>
+<span class="token comment"># PyTorch实现分布式运算是通过NCLL进行显卡通信的</span>
+torch<span class="token punctuation">.</span>distributed<span class="token punctuation">.</span>init_process_group<span class="token punctuation">(</span>
+    backend<span class="token operator">=</span><span class="token string">'nccl'</span><span class="token punctuation">,</span>
+    rank<span class="token operator">=</span>args<span class="token punctuation">.</span>local_rank
+<span class="token punctuation">)</span>
+</span></span></span></code></pre><div id="https://www.notion.so/5bb6a224eac743c68b11baa506d402a1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">重新配置DataLoader</strong></span></span></p></div><pre id="https://www.notion.so/d9f55e6cb850490e8f577be390258774" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>kwargs <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"num_workers"</span><span class="token punctuation">:</span> args<span class="token punctuation">.</span>workers<span class="token punctuation">,</span> <span class="token string">"pin_memory"</span><span class="token punctuation">:</span> <span class="token boolean">True</span><span class="token punctuation">}</span><span class="token keyword">if</span> use_cudaelse <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+train_sampler <span class="token operator">=</span> DistributedSampler<span class="token punctuation">(</span>train_dataset<span class="token punctuation">)</span>
+self<span class="token punctuation">.</span>train_loader <span class="token operator">=</span> torch<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>data<span class="token punctuation">.</span>DataLoader<span class="token punctuation">(</span>
+            train_dataset<span class="token punctuation">,</span>
+            batch_size<span class="token operator">=</span>args<span class="token punctuation">.</span>batch_size<span class="token punctuation">,</span>
+            sampler<span class="token operator">=</span>train_sampler<span class="token punctuation">,</span>
+            <span class="token operator">**</span>kwargs
+        <span class="token punctuation">)</span>
+
+<span class="token comment"># 注意，由于使用了Sampler方法，dataloader中就不能加shuffle、drop_last等参数了</span>
+<span class="token triple-quoted-string string">'''
+PyTorch dataloader.py 192-197 代码
+        if batch_sampler is not None:
+            # auto_collation with custom batch_sampler
+            if batch_size != 1 or shuffle or sampler is not None or drop_last:
+                raise ValueError('batch_sampler option is mutually exclusive '
+                                 'with batch_size, shuffle, sampler, and '
+                                 'drop_last')'''</span>
+
+</span></span></span></code></pre><div id="https://www.notion.so/0feeea4755894b4c831706ba513a6b59" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">pin_memory就是锁页内存，创建DataLoader时，设置pin_memory=True，则意味着生成的Tensor数据最开始是属于内存中的锁页内存，这样将内存的Tensor转义到GPU的显存就会更快一些。</span></span></p></div><div id="https://www.notion.so/27d0831352f446c2a80d18269a60be58" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">模型的初始化</strong></span></span></p></div><pre id="https://www.notion.so/42c2824b91154a37a91a28f9da688ae0" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>torch.cuda.set_device(args.local_rank)
+device = torch.device(&#x27;cuda&#x27;, args.local_rank)
+model.to(device)
+model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+model = torch.nn.parallel.DistributedDataParallel(
+        model,
+        device_ids=[args.local_rank],
+        output_device=args.local_rank,
+        find_unused_parameters=True,
+        )
+torch.backends.cudnn.benchmark=True
+# 将会让程序在开始时花费一点额外时间，为整个网络的每个卷积层搜索最适合它的卷积实现算法，进而实现网络的加速
+# DistributedDataParallel可以将不同GPU上求得的梯度进行汇总，实现对模型GPU的更新
+</span></span></span></code></pre><div id="https://www.notion.so/fb8beb577ad048b380d415e7fe72a6a1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">DistributedDataParallel可以将不同GPU上求得的梯度进行汇总，实现对模型GPU的更新</span></span></p></div><h3 id="https://www.notion.so/a4dda1ec28884480b204908dff682b57" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/a4dda1ec28884480b204908dff682b57"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">同步BatchNormalization层</strong></span></span></h3><div id="https://www.notion.so/e10bc6b619fe41ba94094a6fdad69205" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">对于比较消耗显存的训练任务时，往往单卡上的相对批量过小，影响模型的收敛效果。跨卡同步 Batch Normalization 可以使用全局的样本进行归一化，这样相当于‘增大‘了批量大小，这样训练效果不再受到使用 GPU 数量的影响。参考自单机多卡操作(分布式DataParallel，混合精度，Horovod) 幸运的是，在近期的Pytorch版本中，PyTorch已经开始原生支持BatchNormalization层的同步。</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/94ed98c72ffa44e1ba9392095c5cd498" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">torch.nn.SyncBatchNorm</strong></span></span></li><li id="https://www.notion.so/d40b92a6773f4e08aa1f11d7de5f5969" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">torch.nn.SyncBatchNorm.convert_sync_batchnorm</strong></span><span class="SemanticString">：将BatchNorm-alization层自动转化为</span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">torch.nn.SyncBatchNorm</strong></span><span class="SemanticString">实现不同GPU上的BatchNormalization层的同步</span></span></li></ul><div id="https://www.notion.so/02577654d60a4daf97484d483d4dc675" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">具体实现请参考模型的初始化部分代码 </span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">python model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)</code></span></span></p></div><div id="https://www.notion.so/73d405b5faa4490f8f87891f5bedd27f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">同步模型初始化的随机种子</strong></span></span></p></div><div id="https://www.notion.so/a989c7e1b6e0480f927d92899ffc6e4d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">目前还没有尝试过不同进程上使用不同随机种子的状况。为了保险起见，建议确保每个模型初始化的随机种子相同，保证每个GPU进程上的模型是同步的。</span></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Simon’s Blogs 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
