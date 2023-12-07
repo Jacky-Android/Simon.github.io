@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/55181594?v=4">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>可视化网络结构&nbsp;|&nbsp;Simon’s Blogs</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="可视化网络结构">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🔷&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="https://avatars.githubusercontent.com/u/55181594?v=4"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About me</span>
+        </div>
+      </a>
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🔷&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">可视化网络结构</h1>
+    
+  </header>
+  <article id="https://www.notion.so/36dcbc23bbc14fcf95b33813db371b77" class="PageRoot"><h1 id="https://www.notion.so/7e71c6d14c7e4a4e94b3f955e7cc64d9" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/7e71c6d14c7e4a4e94b3f955e7cc64d9"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">可视化网络结构</span></span></h1><div id="https://www.notion.so/cfe14a4a0ae74596b9aafc0940f5faf7" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">随着深度神经网络做的的发展，网络的结构越来越复杂，我们也很难确定每一层的输入结构，输出结构以及参数等信息，这样导致我们很难在短时间内完成debug。因此掌握一个可以用来可视化网络结构的工具是十分有必要的。类似的功能在另一个深度学习库Keras中可以调用一个叫做</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">model.summary()</code></span><span class="SemanticString">的API来很方便地实现，调用后就会显示我们的模型参数，输入大小，输出大小，模型的整体参数等，但是在PyTorch中没有这样一种便利的工具帮助我们可视化我们的模型结构。</span></span></p></div><div id="https://www.notion.so/38e1763e04c24a9a99cbd7dbfd21bee4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">为了解决这个问题，人们开发了torchinfo工具包 ( torchinfo是由torchsummary和torchsummaryX重构出的库) 。本节我们将介绍如何使用torchinfo来可视化网络结构。</span></span></p></div><div id="https://www.notion.so/36475ec3c01849739e9097adb0d9377e" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">经过本节的学习，你将收获：</span></span></p></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/63f2afdf3a0b4085817d5f53875b7002" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">可视化网络结构的方法</span></span></li></ul><h2 id="https://www.notion.so/6efb161df14b4c45b6218c6e804ab68a" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/6efb161df14b4c45b6218c6e804ab68a"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">使用print函数打印模型基础信息</span></span></h2><div id="https://www.notion.so/ae4a48c1ac564c4ab42dcfd4c5f0e32c" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">在本节中，我们将使用ResNet18的结构进行展示。</span></span></p></div><pre id="https://www.notion.so/22e7695572f44a8e8f859ee90e104a3b" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">import</span> torchvision<span class="token punctuation">.</span>models <span class="token keyword">as</span> models
+model <span class="token operator">=</span> models<span class="token punctuation">.</span>resnet18<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</span></span></span></code></pre><div id="https://www.notion.so/f6b6a8aff46b4506bc21abe24c920d75" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">通过上面的两步，我们就得到resnet18的模型结构。在学习torchinfo之前，让我们先看下直接print(model)的结果。</span></span></p></div><pre id="https://www.notion.so/de7bbb6962a74848bab480306ecf85a5" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>ResNet<span class="token punctuation">(</span>
+  <span class="token punctuation">(</span>conv1<span class="token punctuation">)</span><span class="token punctuation">:</span> Conv2d<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> kernel_size<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">,</span> stride<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> bias<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+  <span class="token punctuation">(</span>bn1<span class="token punctuation">)</span><span class="token punctuation">:</span> BatchNorm2d<span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> eps<span class="token operator">=</span><span class="token number">1e-05</span><span class="token punctuation">,</span> momentum<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">,</span> affine<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> track_running_stats<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+  <span class="token punctuation">(</span>relu<span class="token punctuation">)</span><span class="token punctuation">:</span> ReLU<span class="token punctuation">(</span>inplace<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+  <span class="token punctuation">(</span>maxpool<span class="token punctuation">)</span><span class="token punctuation">:</span> MaxPool2d<span class="token punctuation">(</span>kernel_size<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> stride<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> dilation<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> ceil_mode<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+  <span class="token punctuation">(</span>layer1<span class="token punctuation">)</span><span class="token punctuation">:</span> Sequential<span class="token punctuation">(</span>
+    <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Bottleneck<span class="token punctuation">(</span>
+      <span class="token punctuation">(</span>conv1<span class="token punctuation">)</span><span class="token punctuation">:</span> Conv2d<span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> kernel_size<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> stride<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> bias<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+      <span class="token punctuation">(</span>bn1<span class="token punctuation">)</span><span class="token punctuation">:</span> BatchNorm2d<span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> eps<span class="token operator">=</span><span class="token number">1e-05</span><span class="token punctuation">,</span> momentum<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">,</span> affine<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> track_running_stats<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+      <span class="token punctuation">(</span>conv2<span class="token punctuation">)</span><span class="token punctuation">:</span> Conv2d<span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> kernel_size<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> stride<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> padding<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> bias<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+      <span class="token punctuation">(</span>bn2<span class="token punctuation">)</span><span class="token punctuation">:</span> BatchNorm2d<span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> eps<span class="token operator">=</span><span class="token number">1e-05</span><span class="token punctuation">,</span> momentum<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">,</span> affine<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> track_running_stats<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+      <span class="token punctuation">(</span>conv3<span class="token punctuation">)</span><span class="token punctuation">:</span> Conv2d<span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">256</span><span class="token punctuation">,</span> kernel_size<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> stride<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> bias<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+      <span class="token punctuation">(</span>bn3<span class="token punctuation">)</span><span class="token punctuation">:</span> BatchNorm2d<span class="token punctuation">(</span><span class="token number">256</span><span class="token punctuation">,</span> eps<span class="token operator">=</span><span class="token number">1e-05</span><span class="token punctuation">,</span> momentum<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">,</span> affine<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> track_running_stats<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+      <span class="token punctuation">(</span>relu<span class="token punctuation">)</span><span class="token punctuation">:</span> ReLU<span class="token punctuation">(</span>inplace<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+      <span class="token punctuation">(</span>downsample<span class="token punctuation">)</span><span class="token punctuation">:</span> Sequential<span class="token punctuation">(</span>
+        <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Conv2d<span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">256</span><span class="token punctuation">,</span> kernel_size<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> stride<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> bias<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+        <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span> BatchNorm2d<span class="token punctuation">(</span><span class="token number">256</span><span class="token punctuation">,</span> eps<span class="token operator">=</span><span class="token number">1e-05</span><span class="token punctuation">,</span> momentum<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">,</span> affine<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> track_running_stats<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">)</span>
+  <span class="token punctuation">(</span>avgpool<span class="token punctuation">)</span><span class="token punctuation">:</span> AdaptiveAvgPool2d<span class="token punctuation">(</span>output_size<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">(</span>fc<span class="token punctuation">)</span><span class="token punctuation">:</span> Linear<span class="token punctuation">(</span>in_features<span class="token operator">=</span><span class="token number">2048</span><span class="token punctuation">,</span> out_features<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">,</span> bias<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</span></span></span></code></pre><div id="https://www.notion.so/abc34f2a5f3a4ba88e28144c27e397f2" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">我们可以发现单纯的print(model)，只能得出基础构件的信息，既不能显示出每一层的shape，也不能显示对应参数量的大小，为了解决这些问题，我们就需要介绍出我们今天的主人公</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">torchinfo</code></span><span class="SemanticString">。</span></span></p></div><h2 id="https://www.notion.so/b0578cc93ae14b91af70221efa249563" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/b0578cc93ae14b91af70221efa249563"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString"> 使用torchinfo可视化网络结构</span></span></h2><ul class="BulletedListWrapper"><li id="https://www.notion.so/aac4d6b7a2a34a25ad523f4edd2e3b84" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">torchinfo的安装</strong></span></span></li></ul><pre id="https://www.notion.so/059c09fc7e7e430b9eeecbf233716fb0" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span># 安装方法一
+pip install torchinfo
+# 安装方法二
+conda install -c conda-forge torchinfo
+</span></span></span></code></pre><ul class="BulletedListWrapper"><li id="https://www.notion.so/124fd841f22d4ff39285288042824e04" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">torchinfo的使用</strong></span></span></li></ul><div id="https://www.notion.so/33ca0a8b48544fa58ea190788412696d" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">trochinfo的使用也是十分简单，我们只需要使用</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">torchinfo.summary()</code></span><span class="SemanticString">就行了，必需的参数分别是model，input_size[batch_size,channel,h,w]，更多参数可以参考</span><span class="SemanticString"><a class="SemanticString__Fragment SemanticString__Fragment--Link" href="https://github.com/TylerYep/torchinfo#documentation">documentation</a></span><span class="SemanticString">，下面让我们一起通过一个实例进行学习。</span></span></p></div><pre id="https://www.notion.so/476467604a1942acb648dff69b143d40" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">import</span> torchvision<span class="token punctuation">.</span>models <span class="token keyword">as</span> models
+<span class="token keyword">from</span> torchinfo <span class="token keyword">import</span> summary
+resnet18 <span class="token operator">=</span> models<span class="token punctuation">.</span>resnet18<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># 实例化模型</span>
+summary<span class="token punctuation">(</span>resnet18<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">224</span><span class="token punctuation">,</span> <span class="token number">224</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment"># 1：batch_size 3:图片的通道数 224: 图片的高宽</span>
+</span></span></span></code></pre><ul class="BulletedListWrapper"><li id="https://www.notion.so/163ff830933b490f978b75c690361012" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">torchinfo的结构化输出</strong></span></span></li></ul><pre id="https://www.notion.so/05867d4905fd4d27bfab9dc011b24a07" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span>=========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+=========================================================================================
+ResNet                                   --                        --
+├─Conv2d: 1-1                            [1, 64, 112, 112]         9,408
+├─BatchNorm2d: 1-2                       [1, 64, 112, 112]         128
+├─ReLU: 1-3                              [1, 64, 112, 112]         --
+├─MaxPool2d: 1-4                         [1, 64, 56, 56]           --
+├─Sequential: 1-5                        [1, 64, 56, 56]           --
+│    └─BasicBlock: 2-1                   [1, 64, 56, 56]           --
+│    │    └─Conv2d: 3-1                  [1, 64, 56, 56]           36,864
+│    │    └─BatchNorm2d: 3-2             [1, 64, 56, 56]           128
+│    │    └─ReLU: 3-3                    [1, 64, 56, 56]           --
+│    │    └─Conv2d: 3-4                  [1, 64, 56, 56]           36,864
+│    │    └─BatchNorm2d: 3-5             [1, 64, 56, 56]           128
+│    │    └─ReLU: 3-6                    [1, 64, 56, 56]           --
+│    └─BasicBlock: 2-2                   [1, 64, 56, 56]           --
+│    │    └─Conv2d: 3-7                  [1, 64, 56, 56]           36,864
+│    │    └─BatchNorm2d: 3-8             [1, 64, 56, 56]           128
+│    │    └─ReLU: 3-9                    [1, 64, 56, 56]           --
+│    │    └─Conv2d: 3-10                 [1, 64, 56, 56]           36,864
+│    │    └─BatchNorm2d: 3-11            [1, 64, 56, 56]           128
+│    │    └─ReLU: 3-12                   [1, 64, 56, 56]           --
+├─Sequential: 1-6                        [1, 128, 28, 28]          --
+│    └─BasicBlock: 2-3                   [1, 128, 28, 28]          --
+│    │    └─Conv2d: 3-13                 [1, 128, 28, 28]          73,728
+│    │    └─BatchNorm2d: 3-14            [1, 128, 28, 28]          256
+│    │    └─ReLU: 3-15                   [1, 128, 28, 28]          --
+│    │    └─Conv2d: 3-16                 [1, 128, 28, 28]          147,456
+│    │    └─BatchNorm2d: 3-17            [1, 128, 28, 28]          256
+│    │    └─Sequential: 3-18             [1, 128, 28, 28]          8,448
+│    │    └─ReLU: 3-19                   [1, 128, 28, 28]          --
+│    └─BasicBlock: 2-4                   [1, 128, 28, 28]          --
+│    │    └─Conv2d: 3-20                 [1, 128, 28, 28]          147,456
+│    │    └─BatchNorm2d: 3-21            [1, 128, 28, 28]          256
+│    │    └─ReLU: 3-22                   [1, 128, 28, 28]          --
+│    │    └─Conv2d: 3-23                 [1, 128, 28, 28]          147,456
+│    │    └─BatchNorm2d: 3-24            [1, 128, 28, 28]          256
+│    │    └─ReLU: 3-25                   [1, 128, 28, 28]          --
+├─Sequential: 1-7                        [1, 256, 14, 14]          --
+│    └─BasicBlock: 2-5                   [1, 256, 14, 14]          --
+│    │    └─Conv2d: 3-26                 [1, 256, 14, 14]          294,912
+│    │    └─BatchNorm2d: 3-27            [1, 256, 14, 14]          512
+│    │    └─ReLU: 3-28                   [1, 256, 14, 14]          --
+│    │    └─Conv2d: 3-29                 [1, 256, 14, 14]          589,824
+│    │    └─BatchNorm2d: 3-30            [1, 256, 14, 14]          512
+│    │    └─Sequential: 3-31             [1, 256, 14, 14]          33,280
+│    │    └─ReLU: 3-32                   [1, 256, 14, 14]          --
+│    └─BasicBlock: 2-6                   [1, 256, 14, 14]          --
+│    │    └─Conv2d: 3-33                 [1, 256, 14, 14]          589,824
+│    │    └─BatchNorm2d: 3-34            [1, 256, 14, 14]          512
+│    │    └─ReLU: 3-35                   [1, 256, 14, 14]          --
+│    │    └─Conv2d: 3-36                 [1, 256, 14, 14]          589,824
+│    │    └─BatchNorm2d: 3-37            [1, 256, 14, 14]          512
+│    │    └─ReLU: 3-38                   [1, 256, 14, 14]          --
+├─Sequential: 1-8                        [1, 512, 7, 7]            --
+│    └─BasicBlock: 2-7                   [1, 512, 7, 7]            --
+│    │    └─Conv2d: 3-39                 [1, 512, 7, 7]            1,179,648
+│    │    └─BatchNorm2d: 3-40            [1, 512, 7, 7]            1,024
+│    │    └─ReLU: 3-41                   [1, 512, 7, 7]            --
+│    │    └─Conv2d: 3-42                 [1, 512, 7, 7]            2,359,296
+│    │    └─BatchNorm2d: 3-43            [1, 512, 7, 7]            1,024
+│    │    └─Sequential: 3-44             [1, 512, 7, 7]            132,096
+│    │    └─ReLU: 3-45                   [1, 512, 7, 7]            --
+│    └─BasicBlock: 2-8                   [1, 512, 7, 7]            --
+│    │    └─Conv2d: 3-46                 [1, 512, 7, 7]            2,359,296
+│    │    └─BatchNorm2d: 3-47            [1, 512, 7, 7]            1,024
+│    │    └─ReLU: 3-48                   [1, 512, 7, 7]            --
+│    │    └─Conv2d: 3-49                 [1, 512, 7, 7]            2,359,296
+│    │    └─BatchNorm2d: 3-50            [1, 512, 7, 7]            1,024
+│    │    └─ReLU: 3-51                   [1, 512, 7, 7]            --
+├─AdaptiveAvgPool2d: 1-9                 [1, 512, 1, 1]            --
+├─Linear: 1-10                           [1, 1000]                 513,000
+=========================================================================================
+Total params: 11,689,512
+Trainable params: 11,689,512
+Non-trainable params: 0
+Total mult-adds (G): 1.81
+=========================================================================================
+Input size (MB): 0.60
+Forward/backward pass size (MB): 39.75
+Params size (MB): 46.76
+Estimated Total Size (MB): 87.11
+=========================================================================================
+</span></span></span></code></pre><div id="https://www.notion.so/0b3a27ba86984263ae23f577e6bcbd91" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">我们可以看到torchinfo提供了更加详细的信息，包括模块信息（每一层的类型、输出shape和参数量）、模型整体的参数量、模型大小、一次前向或者反向传播需要的内存大小等</span></span></p></div><div id="https://www.notion.so/fb72a8c199a4451788b5263e2ad188a0" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">注意</strong></span><span class="SemanticString">：</span></span></p></div><div id="https://www.notion.so/1a796e9f9e4c4dc5b8befe2497ecf0d4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">但你使用的是colab或者jupyter notebook时，想要实现该方法，</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">summary()</code></span><span class="SemanticString">一定是该单元（即notebook中的cell）的返回值，否则我们就需要使用</span><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">print(summary(...))</code></span><span class="SemanticString">来可视化。</span></span></p></div></article>
+  <footer class="Footer">
+  <div>&copy; Simon’s Blogs 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
