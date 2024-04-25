@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Chrome, Firefox OS and Opera Status Bar Color -->
+<meta name="theme-color" content="#FFFFFF">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+<link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+<link rel="stylesheet" type="text/css" href="css/theme.css">
+<link rel="stylesheet" type="text/css" href="css/notablog.css">
+<!-- Favicon -->
+
+  <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/55181594?v=4">
+
+<style>
+  :root {
+    font-size: 20px;
+  }
+</style>
+  <title>Mamba in windows 配置&nbsp;|&nbsp;Simon’s Blogs</title>
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="Mamba in windows 配置">
+  
+  
+    <meta property="og:image" content="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🫣&lt;/text&gt;&lt;/svg&gt;">
+  
+  <style>
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+  <a href="index.html">
+    <div class="Navbar__Btn">
+      
+        <span><img class="inline-img-icon" src="https://avatars.githubusercontent.com/u/55181594?v=4"></span>&nbsp;
+      
+      <span>Home</span>
+    </div>
+  </a>
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="road.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🤑&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>2024年深度学习学习路线</span>
+        </div>
+      </a>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <span class="Navbar__Delim">&centerdot;</span>
+      <a href="about.html">
+        <div class="Navbar__Btn">
+          
+            <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;😀&lt;/text&gt;&lt;/svg&gt;"></span>&nbsp;
+          
+          <span>About me</span>
+        </div>
+      </a>
+    
+  
+    
+  
+</nav>
+  <header class="Header">
+    
+    <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+    
+      <div class="Header__Icon">
+        <span><img class="inline-img-icon" src="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text text-anchor=%22middle%22 dominant-baseline=%22middle%22 x=%2250%22 y=%2255%22 font-size=%2280%22&gt;🫣&lt;/text&gt;&lt;/svg&gt;"></span>
+      </div>
+    
+    <h1 class="Header__Title">Mamba in windows 配置</h1>
+    
+  </header>
+  <article id="https://www.notion.so/041ccd4c04ba4ff3aa32ffec72d80cc3" class="PageRoot"><a id="https://www.notion.so/89338d8b2ffe4600b67047cd6d919afd" class="Page" href="https://www.notion.so/89338d8b2ffe4600b67047cd6d919afd"><div><div class="Page__Icon"><svg viewBox="0 0 30 30" style="width:1.1875em;height:1.1875em;fill:inherit;opacity:0.8"><g><path d="M16,1H4v28h22V11L16,1z M16,3.828L23.172,11H16V3.828z M24,27H6V3h8v10h10V27z M8,17h14v-2H8V17z M8,21h14v-2H8V21z M8,25h14v-2H8V25z"></path></g></svg></div><div class="Page__Title"><span class="SemanticStringArray"><span class="SemanticString">Win配置Mamba</span></span></div></div></a><h1 id="https://www.notion.so/a39c9320b668418d80df6930df080b67" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/a39c9320b668418d80df6930df080b67"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">vmamba block that runs efficiently on windows</span></span></h1><div id="https://www.notion.so/c98b33d8e2784a1aa1bcfdc503d717e4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Windows配置的mamba 不能使用selective_scan_cuda，导致需要for循环，而官方实现执行了更快的并行扫描，另外还具有硬件感知能力（如 FlashAttention），在win上艰难执行
+修改为</span></span></p></div><pre id="https://www.notion.so/4de5835fa1464c65844bf0f73d8c6f12" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token keyword">def</span> <span class="token function">selective_scan</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> u<span class="token punctuation">,</span> delta<span class="token punctuation">,</span> A<span class="token punctuation">,</span> B<span class="token punctuation">,</span> C<span class="token punctuation">,</span> D<span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+
+        <span class="token punctuation">(</span>b<span class="token punctuation">,</span> l<span class="token punctuation">,</span> d<span class="token punctuation">)</span> <span class="token operator">=</span> u<span class="token punctuation">.</span>shape <span class="token comment">#(B,L,D)</span>
+        n <span class="token operator">=</span> A<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token comment"># N</span>
+
+        <span class="token comment"># einsum 操作实际上是将 delta 和 A 张量的最后两个维度进行矩阵乘法，并在前面添加了两个维度（b 和 l）</span>
+        <span class="token comment"># torch.exp 函数对这个张量中的每个元素进行指数化，即将每个元素取指数值。</span>
+        deltaA <span class="token operator">=</span> torch<span class="token punctuation">.</span>exp<span class="token punctuation">(</span>einsum<span class="token punctuation">(</span>delta<span class="token punctuation">,</span> A<span class="token punctuation">,</span><span class="token string">'b l d, d n -> b l d n'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>   <span class="token comment"># (B,L,D) * (D,N) -> (B,L,D,N)</span>
+        <span class="token comment"># 将 delta、B 和 u 张量的对应位置元素相乘，并在最后一个维度上进行求和，输出一个新的张量。</span>
+        g <span class="token operator">=</span> B<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+        B <span class="token operator">=</span> repeat<span class="token punctuation">(</span>B<span class="token punctuation">,</span> <span class="token string">"b g n l -> b l (g H) n"</span><span class="token punctuation">,</span> H<span class="token operator">=</span>A<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">//</span> B<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+        deltaB_u <span class="token operator">=</span> einsum<span class="token punctuation">(</span>delta<span class="token punctuation">,</span> B<span class="token punctuation">,</span> u<span class="token punctuation">,</span> <span class="token string">'b l d, b l d n, b l d -> b l d n'</span><span class="token punctuation">)</span>  <span class="token comment"># (B,L,D)*(B,L,N)*(B,L,D)->(B,L,D,N)</span>
+
+        <span class="token triple-quoted-string string">'''
+        执行 selective scan (see scan_SSM() in The Annotated S4 [2])
+        # 注意，下面的代码是顺序执行的, 然而在官方代码中使用更快的并行扫描算法实现的(类似于FlashAttention，采用硬件感知扫描)。
+        '''</span>
+        x <span class="token operator">=</span> torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> d<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">,</span> device<span class="token operator">=</span>deltaA<span class="token punctuation">.</span>device<span class="token punctuation">)</span>
+        C <span class="token operator">=</span> repeat<span class="token punctuation">(</span>C<span class="token punctuation">,</span> <span class="token string">"B G N L -> B (G H) N L"</span><span class="token punctuation">,</span> H<span class="token operator">=</span>A<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">//</span> C<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        ys <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+        <span class="token triple-quoted-string string">'''for i in range(l):  # 这里使用for循环的方式只用来说明核心的逻辑，原代码中采用并行扫描算法
+            x = deltaA[:, i] * x + deltaB_u[:, i] # x(t + 1) = Ax(t) + Bu(t)
+            #print(x.shape,C[:, :, :, i].shape)
+            y = einsum(x, C[:, :, :, i], 'b d n, b d n -> b d') # y(t) = Cx(t)  (B,D,N)*(B,N)->(B,D)
+            ys.append(y)
+        y = torch.stack(ys, dim=1)  # 大小 (b, l, d_in)  (B,L,D)'''</span>
+        x_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token triple-quoted-string string">'''for i in range(l):
+            x = deltaA[:, i] * x + deltaB_u[:, i]  # x(t + 1) = Ax(t) + Bu(t)
+            x_list.append(x.unsqueeze(1))  # 添加到列表中，稍后进行拼接
+
+        x_concat = torch.cat(x_list, dim=1)  # 在第二维度上拼接所有的 x'''</span>
+        <span class="token comment">#print(x_concat.shape,u.shape,C[:, :, :, i].shape)</span>
+        x_concat <span class="token operator">=</span> deltaA <span class="token operator">*</span> x<span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> deltaB_u
+        <span class="token comment">#print(x_concat.shape,u.shape,C[:, :, :, l-1].shape)</span>
+        y <span class="token operator">=</span> einsum<span class="token punctuation">(</span> x_concat<span class="token punctuation">,</span> C<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> l<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token string">'b l d n,b d n->b l d'</span><span class="token punctuation">)</span>
+
+
+
+        y <span class="token operator">=</span> y <span class="token operator">+</span> u <span class="token operator">*</span> D <span class="token comment"># y(t) = Cx(t)+Du(t)</span>
+        y <span class="token operator">=</span> y<span class="token punctuation">.</span>permute<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> y <span class="token comment">#(B,L,D)</span>
+</span></span></span></code></pre></article>
+  <footer class="Footer">
+  <div>&copy; Simon’s Blogs 2022</div>
+  <div>&centerdot;</div>
+  <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+      rel="noopener noreferrer">Notablog</a>.
+  </div>
+</footer>
+</body>
+
+</html>
